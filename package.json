@@ -1,0 +1,14 @@
+{
+  "name": "img-compressor",
+  "version": "1.0.0",
+  "description": "Desktop app to compress images",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Adnan Reza",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^9.0.0"
+  }
+}
