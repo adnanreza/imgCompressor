@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, globalShortcut } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 
 // Set environment
 process.env.NODE_ENV = 'development';
@@ -8,6 +8,7 @@ const isWin = process.platform === 'win32' ? true : false;
 const isMac = process.platform === 'darwin' ? true : false;
 
 let mainWindow;
+let aboutWindow;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -22,17 +23,24 @@ function createMainWindow() {
   mainWindow.loadFile('./app/index.html');
 }
 
+function createAboutWindow() {
+  aboutWindow = new BrowserWindow({
+    title: 'About Image Compressor',
+    width: 500,
+    height: 600,
+    icon: './assets/icons/Icon_256x256.png',
+    resizable: isDev ? true : false,
+    backgroundColor: 'white',
+  });
+
+  aboutWindow.loadFile('./app/about.html');
+}
+
 app.on('ready', () => {
   createMainWindow();
 
   const mainMenu = Menu.buildFromTemplate(menu);
   Menu.setApplicationMenu(mainMenu);
-
-  // Setup global shortcuts
-  globalShortcut.register('CmdOrCtrl+R', () => mainWindow.reload());
-  globalShortcut.register(isMac ? 'Command+Alt+I' : 'Ctrl+Shift+I', () =>
-    mainWindow.toggleDevTools()
-  );
 
   mainWindow.on('ready', () => (mainWindow = null));
 });
