@@ -70,12 +70,14 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const imgPath = img.files[0].path;
+        const imgName = img.files[0].name;
         const quality = slider.value;
 
         // Send this to the process
         ipcRenderer.send('image:compress', {
           imgPath,
           quality,
+          imgName,
         });
       });
     </script>

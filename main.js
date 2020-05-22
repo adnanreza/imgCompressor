@@ -1,4 +1,10 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const path = require('path');
+const os = require('os');
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const imagemin = require('imagemin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+const slash = require('slash');
 
 // Set environment
 process.env.NODE_ENV = 'development';
@@ -96,9 +102,31 @@ const menu = [
     : []),
 ];
 
+/** IPC Comms */
 ipcMain.on('image:compress', (e, options) => {
-  console.log(options);
+  // Add dest to options obj
+  options.dest = path.join(os.homedir(), 'imagecompressor');
+  compressImage(options);
 });
+
+async function compressImage({ imgPath, quality, dest, imgName }) {
+  try {
+    const pngQuality = quality / 100;
+    const files = await imagemin([slash(imgPath)], {
+      destination: dest,
+      plugins: [
+        imageminMozjpeg({ quality }),
+        imageminPngquant({
+          quality: [pngQuality, pngQuality],
+        }),
+      ],
+    });
+    console.log(`${dest}\\${imgPath}`);
+    shell.showItemInFolder(`${dest}\\${imgName}`);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
