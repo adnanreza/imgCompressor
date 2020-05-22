@@ -26,8 +26,8 @@ function createMainWindow() {
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
     title: 'About Image Compressor',
-    width: 500,
-    height: 600,
+    width: 400,
+    height: 300,
     icon: './assets/icons/Icon_256x256.png',
     resizable: isDev ? true : false,
     backgroundColor: 'white',
@@ -46,10 +46,23 @@ app.on('ready', () => {
 });
 
 const menu = [
-  ...(isMac ? [{ role: 'appMenu' }] : []),
+  ...(isMac
+    ? [
+        {
+          label: app.name,
+          submenu: [
+            {
+              label: 'About',
+              click: createAboutWindow,
+            },
+          ],
+        },
+      ]
+    : []),
   {
     role: 'fileMenu',
   },
+
   ...(isDev
     ? [
         {
@@ -59,6 +72,19 @@ const menu = [
             { role: 'forcereload' },
             { type: 'separator' },
             { role: 'toggledevtools' },
+          ],
+        },
+      ]
+    : []),
+  ...(!isMac
+    ? [
+        {
+          label: 'Help',
+          submenu: [
+            {
+              label: 'About',
+              click: createAboutWindow,
+            },
           ],
         },
       ]
