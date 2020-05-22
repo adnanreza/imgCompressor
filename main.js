@@ -5,9 +5,10 @@ const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 const slash = require('slash');
+const log = require('electron-log');
 
 // Set environment
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 const isDev = process.env.NODE_ENV !== 'production' ? true : false;
 const isWin = process.platform === 'win32' ? true : false;
@@ -26,6 +27,7 @@ function createMainWindow() {
     backgroundColor: 'white',
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 
@@ -121,12 +123,13 @@ async function compressImage({ imgPath, quality, dest, imgName }) {
         }),
       ],
     });
-    console.log(files);
+    log.info(files);
     shell.showItemInFolder(`${dest}\\${imgName}`);
     //Send to renderer that conversion is done
     mainWindow.webContents.send('image:done');
   } catch (error) {
     console.log(error);
+    log.error(error);
   }
 }
 
