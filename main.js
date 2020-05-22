@@ -20,9 +20,9 @@ let aboutWindow;
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     title: 'Image Compressor',
-    width: isDev ? 800 : 500,
-    height: 600,
-    icon: './assets/icons/Icon_256x256.png',
+    width: isDev ? 900 : 600,
+    height: 700,
+    //icon: './assets/icons/Icon_256x256.png',
     resizable: isDev ? true : false,
     backgroundColor: 'white',
     webPreferences: {
