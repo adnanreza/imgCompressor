@@ -13,12 +13,17 @@ let aboutWindow;
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     title: 'Image Compressor',
-    width: 500,
+    width: isDev ? 800 : 500,
     height: 600,
     icon: './assets/icons/Icon_256x256.png',
     resizable: isDev ? true : false,
     backgroundColor: 'white',
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
+
+  if (isDev) mainWindow.webContents.openDevTools();
 
   mainWindow.loadFile('./app/index.html');
 }
