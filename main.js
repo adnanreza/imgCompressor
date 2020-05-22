@@ -121,8 +121,10 @@ async function compressImage({ imgPath, quality, dest, imgName }) {
         }),
       ],
     });
-    console.log(`${dest}\\${imgPath}`);
+    console.log(files);
     shell.showItemInFolder(`${dest}\\${imgName}`);
+    //Send to renderer that conversion is done
+    mainWindow.webContents.send('image:done');
   } catch (error) {
     console.log(error);
   }

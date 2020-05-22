@@ -80,6 +80,13 @@
           imgName,
         });
       });
+
+      // On done
+      ipcRenderer.on('image:done', () => {
+        M.toast({
+          html: `Image compressed to ${slider.value}% quality`,
+        });
+      });
     </script>
   </body>
 </html>
